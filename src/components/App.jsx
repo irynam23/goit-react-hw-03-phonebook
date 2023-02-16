@@ -9,6 +9,25 @@ export class App extends Component {
     contacts: [],
     filter: '',
   };
+
+  componentDidMount = () => {
+    // const contacts = JSON.parse(localStorage.getItem('contacts')) ?? [];
+    // this.setState({ contacts });
+
+    const contacts = JSON.parse(localStorage.getItem('contacts'));
+    if (contacts) {
+      this.setState({
+        contacts,
+      });
+    }
+  };
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   handleAddContact = contact => {
     if (
       this.state.contacts.some(({ name }) => {
@@ -39,24 +58,6 @@ export class App extends Component {
       name.toLowerCase().includes(this.state.filter)
     );
   };
-
-  componentDidMount = () => {
-    // const contacts = JSON.parse(localStorage.getItem('contacts')) ?? [];
-    // this.setState({ contacts });
-
-    const contacts = JSON.parse(localStorage.getItem('contacts'));
-    if (contacts) {
-      this.setState({
-        contacts,
-      });
-    }
-  };
-
-  componentDidUpdate(_, prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
 
   render() {
     const { contacts } = this.state;
